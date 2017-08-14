@@ -36,22 +36,22 @@
 </nav>
 <h1>Sign Up</h1>
 <div class="container">
-  <form>
+  <form action="/create" method="post">
     <div class="form-group">
       <label for="userId">User Id</label>
-      <input type="text" class="form-control" id="userId" placeholder="User Id">
+      <input class="form-control" id="userId" name="userId" type="text" placeholder="User Id"/>
     </div>
     <div class="form-group">
-      <label for="Password">Password</label>
-      <input type="password" class="form-control" id="Password" placeholder="Password">
+      <label for="password">Password</label>
+      <input class="form-control" id="password" name="password" type="password" placeholder="Password">
     </div>
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" placeholder="Name">
+      <input class="form-control" id="name" name="name" type="text" placeholder="Name">
     </div>
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="Email">
+      <input class="form-control" id="email" name="email" type="email" placeholder="Email">
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
