@@ -48,7 +48,7 @@ public class UserController {
   @GetMapping("/{id}/form")
   public String updateForm(final @PathVariable Long id, final Model model) {
     model.addAttribute("user", userRepository.findOne(id));
-    return "/user/updateForm";
+    return "user/updateForm";
   }
 
   @PostMapping("/{id}")
