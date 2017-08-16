@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/default">
+<body>
+<div class="container" id="main" layout:fragment="content">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>사용자 아이디</th>
+          <th>이름</th>
+          <th>이메일</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <th scope="row" th:text="${user.id}">1</th>
+          <td th:text="${user.userId}">javajigi</td>
+          <td th:text="${user.name}">자바지기</td>
+          <td th:text="${user.email}">javajigi@slipp.net</td>
+          <td><a th:href="@{'/users/' + ${user.id} + '/form'}" class="btn btn-success" role="button">수정</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
