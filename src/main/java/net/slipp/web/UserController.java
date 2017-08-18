@@ -2,6 +2,7 @@ package net.slipp.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,27 @@ public class UserController {
   @Autowired
   public UserController(final UserRepository userRepository) {
     this.userRepository = userRepository;
+  }
+
+  @GetMapping("/loginForm")
+  public String loginForm() {
+    return "user/login";
+  }
+
+  @PostMapping("/login")
+  public String login(final String userId, final String password, final HttpSession session) {
+    final User user = userRepository.findByUserId(userId);
+    if (user == null) {
+      System.out.println("Login Failure!");
+      return "redirect:/users/loginForm";
+    }
+    if (!password.equals(user.getPassword())) {
+      System.out.println("Login Failure!");
+      return "redirect:/users/loginForm";
+    }
+    System.out.println("Login Success!");
+    session.setAttribute("user", user);
+    return "redirect:/";
   }
 
   @GetMapping("/form")
