@@ -1,5 +1,9 @@
 package net.slipp.web;
 
+import static net.slipp.web.HttpSessionUtils.USER_SESSION_KEY;
+import static net.slipp.web.HttpSessionUtils.getUserFromSession;
+import static net.slipp.web.HttpSessionUtils.isLoginUser;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -39,18 +43,18 @@ public class UserController {
       System.out.println("Login Failure!");
       return "redirect:/users/loginForm";
     }
-    if (!password.equals(user.getPassword())) {
+    if (!user.matchPassword(password)) {
       System.out.println("Login Failure!");
       return "redirect:/users/loginForm";
     }
     System.out.println("Login Success!");
-    session.setAttribute("sessionUser", user);
+    session.setAttribute(USER_SESSION_KEY, user);
     return "redirect:/";
   }
   
   @GetMapping("/logout")
   public String logout(final HttpSession session) {
-    session.removeAttribute("sessionUser");
+    session.removeAttribute(USER_SESSION_KEY);
     return "redirect:/";
   }
 
@@ -76,12 +80,11 @@ public class UserController {
   @GetMapping("/{id}/form")
   public String updateForm(final @PathVariable Long id, final Model model,
       final HttpSession session) {
-    final Object tempUser = session.getAttribute("sessionUser");
-    if (tempUser == null) {
+    if (!isLoginUser(session)) {
       return "redirect:/users/loginForm";
     }
-    final User sessionUser = (User) tempUser;
-    if (!id.equals(sessionUser.getId())) {
+    final User sessionUser = getUserFromSession(session);
+    if (!sessionUser.matchId(id)) {
       throw new IllegalStateException("You can't update another user");
     }
     model.addAttribute("user", userRepository.findOne(id));
@@ -91,12 +94,11 @@ public class UserController {
   @PostMapping("/{id}")
   public String update(final @PathVariable Long id, final @ModelAttribute User updatedUser,
       final HttpSession session) {
-    final Object tempUser = session.getAttribute("tempUser");
-    if (tempUser == null) {
+    if (!isLoginUser(session)) {
       return "redirect:/users/loginForm";
     }
-    final User sessionUser = (User) tempUser;
-    if (!id.equals(sessionUser.getId())) {
+    final User sessionUser = getUserFromSession(session);
+    if (!sessionUser.matchId(id)) {
       throw new IllegalStateException("You can't update another user");
     }
     final User user = userRepository.findOne(id);
