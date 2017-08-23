@@ -73,4 +73,23 @@ public class User {
   public boolean matchId(final Long newId) {
     return newId != null && newId.equals(id);
   }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    final User user = (User) o;
+
+    return id.equals(user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

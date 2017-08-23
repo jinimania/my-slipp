@@ -10,16 +10,16 @@
           <div class="wrap">
             <div class="main">
               <strong class="subject">
-                <a href="./qna/show.html" th:text="${question.title}">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                <a th:href="@{'/questions/' + ${question.id}}" th:text="${question.title}">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
               </strong>
               <div class="auth-info">
                 <i class="icon-add-comment"></i>
-                <span class="time">2016-01-15 18:47</span>
-                <a href="./user/profile.html" class="author" th:text="${question.writer}">자바지기</a>
+                <span class="time" th:text="${question.formattedCreateDate}">2016-01-15 18:47</span>
+                <a href="./user/profile.html" class="author" th:text="${question.writer.userId}">자바지기</a>
               </div>
               <div class="reply" title="댓글">
                 <i class="icon-reply"></i>
-                <span class="point">8</span>
+                <span class="point">10</span>
               </div>
             </div>
           </div>
