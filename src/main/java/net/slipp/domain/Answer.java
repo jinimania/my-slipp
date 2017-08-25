@@ -12,12 +12,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Answer {
-
-  @Id
-  @GeneratedValue
-  @JsonProperty
-  private Long id;
+public class Answer extends AbstractEntity {
 
   @ManyToOne
   @JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
@@ -33,8 +28,6 @@ public class Answer {
   @JsonProperty
   private String contents;
 
-  private LocalDateTime createDate;
-
   public Answer() {
   }
 
@@ -42,11 +35,6 @@ public class Answer {
     this.writer = writer;
     this.question = question;
     this.contents = contents;
-    this.createDate = LocalDateTime.now();
-  }
-
-  public Long getId() {
-    return id;
   }
 
   public User getWriter() {
@@ -73,51 +61,16 @@ public class Answer {
     this.contents = contents;
   }
 
-  public LocalDateTime getCreateDate() {
-    return createDate;
-  }
-
-  public void setCreateDate(final LocalDateTime createDate) {
-    this.createDate = createDate;
-  }
-
-  public String getFormattedCreateDate() {
-    if (createDate == null) {
-      return "";
-    }
-    return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-  }
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    final Answer answer = (Answer) o;
-
-    return id.equals(answer.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return id.hashCode();
+  public boolean isSameWriter(final User loginUser) {
+    return loginUser.equals(this.writer);
   }
 
   @Override
   public String toString() {
     return "Answer{" +
-        "id=" + id +
+        super.toString() +
         ", writer=" + writer +
-        ", contents='" + contents + '\'' +
-        ", createDate=" + createDate +
+        ", contents='" + contents +
         '}';
-  }
-
-  public boolean isSameWriter(final User loginUser) {
-    return loginUser.equals(this.writer);
   }
 }

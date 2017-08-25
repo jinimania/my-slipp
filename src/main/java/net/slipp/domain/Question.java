@@ -2,13 +2,9 @@ package net.slipp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -16,12 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 @Entity
-public class Question {
-
-  @Id
-  @GeneratedValue
-  @JsonProperty
-  private Long id;
+public class Question extends AbstractEntity {
 
   @ManyToOne
   @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
@@ -35,7 +26,8 @@ public class Question {
   @JsonProperty
   private String contents;
 
-  private LocalDateTime createDate;
+  @JsonProperty
+  private Integer countOfAnswer = 0;
 
   @OneToMany(mappedBy = "question")
   @OrderBy("id DESC")
@@ -49,11 +41,6 @@ public class Question {
     this.writer = writer;
     this.title = title;
     this.contents = contents;
-    this.createDate = LocalDateTime.now();
-  }
-
-  public Long getId() {
-    return id;
   }
 
   public User getWriter() {
@@ -80,12 +67,8 @@ public class Question {
     this.contents = contents;
   }
 
-  public LocalDateTime getCreateDate() {
-    return createDate;
-  }
-
-  public void setCreateDate(final LocalDateTime createDate) {
-    this.createDate = createDate;
+  public Integer getCountOfAnswer() {
+    return countOfAnswer;
   }
 
   public List<Answer> getAnswers() {
@@ -96,13 +79,6 @@ public class Question {
     this.answers = answers;
   }
 
-  public String getFormattedCreateDate() {
-    if (createDate == null) {
-      return "";
-    }
-    return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-  }
-
   public void update(final String title, final String contents) {
     this.title = title;
     this.contents = contents;
@@ -110,5 +86,13 @@ public class Question {
 
   public boolean isSameWriter(final User loginUser) {
     return this.writer.equals(loginUser);
+  }
+
+  public void addAnswer() {
+    this.countOfAnswer += 1;
+  }
+
+  public void minusAnswer() {
+    this.countOfAnswer -= 1;
   }
 }

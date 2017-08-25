@@ -4,16 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
-public class User {
-
-  @Id
-  @GeneratedValue
-  @JsonProperty
-  private Long id;
+public class User extends AbstractEntity {
 
   @Column(nullable = false, length = 20, unique = true)
   @JsonProperty
@@ -27,10 +20,6 @@ public class User {
 
   @JsonProperty
   private String email;
-
-  public Long getId() {
-    return id;
-  }
 
   public String getUserId() {
     return userId;
@@ -64,12 +53,6 @@ public class User {
     this.email = email;
   }
 
-  @Override
-  public String toString() {
-    return "User{userId=" + userId + ", password=" + password + ", name=" + name + ", email="
-        + email + "}";
-  }
-
   public void update(final User newUser) {
     this.password = newUser.password;
     this.name = newUser.name;
@@ -81,25 +64,12 @@ public class User {
   }
 
   public boolean matchId(final Long newId) {
-    return newId != null && newId.equals(id);
+    return newId != null && newId.equals(getId());
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-
-    final User user = (User) o;
-
-    return id.equals(user.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return id.hashCode();
+  public String toString() {
+    return "User{" + super.toString() + ", userId=" + userId + ", password=" + password + ","
+        + "name=" + name + ", email=" + email + "}";
   }
 }
